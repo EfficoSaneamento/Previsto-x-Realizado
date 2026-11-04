@@ -1135,7 +1135,7 @@
       risco: "Em risco",
       andamento_ok: "Em andamento",
       deveria_iniciar: "Deveria ter iniciado",
-      planejado: "Previsto"
+      planejado: "Não iniciada"
     };
     const SIT_COLOR = {
       concluido_ok: "var(--c-done)",
@@ -1153,7 +1153,8 @@
       concluido: { label: "Concluída", sits: DONE, color: "var(--c-done)" },
       andamento: { label: "Em andamento", sits: RUN, color: "var(--c-run)" },
       atrasada: { label: "Atrasada", sits: ["atrasado"], color: "var(--c-late)" },
-      previsto: { label: "Prevista", sits: ["planejado", "deveria_iniciar"], color: "var(--c-plan)" }
+      // "Não iniciada" (e não "Prevista") para não confundir com o previsto do período (linha de base)
+      previsto: { label: "Não iniciada", sits: ["planejado", "deveria_iniciar"], color: "var(--c-plan)" }
     };
 
     const RAW = window.DASHBOARD_DATA;
@@ -1952,7 +1953,7 @@
               <span><i style="background:var(--c-done)"></i>Etapas concluídas</span>
               <span><i style="background:var(--c-run)"></i>Em andamento</span>
               <span><i style="background:var(--c-late)"></i>Atrasadas</span>
-              <span><i style="background:var(--c-plan)"></i>Previstas</span>
+              <span><i style="background:var(--c-plan)"></i>Não iniciadas</span>
             </div>
             <div class="locais-scroll">
             <table id="locaisTable">
