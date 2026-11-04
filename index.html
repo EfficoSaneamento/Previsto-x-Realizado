@@ -1911,16 +1911,19 @@
       validarFiltros();
       renderSidenav();
       const list = gerencialList();
+      // Previsto × realizado (cards, avanço por etapa e curva) ignora o filtro de Status:
+      // traz tudo o que foi previsto no período, tenha passado do prazo ou não.
+      const listPrev = filtrarExceto("status");
 
       const etapasVisiveis = ETAPA_ORDEM.filter((e) => !state.etapas.size || state.etapas.has(e));
-      const etapaHtml = etapasVisiveis.map((e) => stageRow(e, list.filter((r) => r.e === e))).join("");
+      const etapaHtml = etapasVisiveis.map((e) => stageRow(e, listPrev.filter((r) => r.e === e))).join("");
 
       const locaisBase = projectMap(list);
       const locaisFiltrado = filtroAtivo.etapas() || filtroAtivo.status();
       const locaisSorted = sortLocaisList(locaisBase);
 
       $("viewGerencial").innerHTML = `
-        ${kpiStrip(list)}
+        ${kpiStrip(listPrev)}
 
         <section class="block cols">
           <div class="panel">
@@ -2015,7 +2018,7 @@
           }
           renderGerencial();
         }));
-      drawSCurve(list);
+      drawSCurve(listPrev);
     }
 
     const fmtBRL = (n) => Number(n).toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
