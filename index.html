@@ -596,11 +596,17 @@
     .prazo-venc { color: var(--c-late); font-weight: 600; }
     .fora-antec { color: var(--c-run-ink); font-weight: 600; }
     .chip-n { margin-left: 3px; opacity: 0.7; font-variant-numeric: tabular-nums; }
-    /* Contar por produto | subtarefa, onde está parado e subtarefas na tabela */
-    .contar-por { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 18px; }
-    .contar-por__lbl { color: var(--text-3); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-    .aviso-detalhe { padding: 4px 10px; border-radius: 8px; background: rgba(255, 138, 1, 0.1); color: var(--c-risk-ink); font-size: 12px; font-weight: 600; }
-    .contar-por + .kpis { margin-top: 12px; }
+    /* Subtarefas junto do produto, onde está parado e subtarefas na tabela */
+    .subrow { display: grid; grid-template-columns: minmax(150px, 1.2fr) minmax(80px, 1fr) 118px 40px; align-items: center; gap: 10px; padding: 4px 0 4px 44px; font-size: 11.5px; color: var(--text-2); }
+    .subrow:hover { background: var(--surface); }
+    .subrow__nome { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .subrow .bar { height: 6px; }
+    .subrow__n { font-size: 11px; line-height: 1.3; }
+    .subrow__n .stage-done { font-size: 11px; }
+    .subrow__pct { text-align: right; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+    .stage + .subrow { margin-top: -6px; }
+    .subrow + .stage { border-top: 1px solid var(--line); }
+    .nota-detalhe { margin-top: 10px; color: var(--text-3); font-size: 11px; }
     .kpis.kpis--parado { margin: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); }
     @media (max-width: 1100px) { .kpis.kpis--parado { grid-template-columns: 1fr 1fr; } }
     .kpi.kpi--mini { padding: 12px 14px; }
@@ -1305,8 +1311,6 @@
       curvaTab: "produtos",
       soVazios: false,
       entregasDir: 1,
-      // Unidade de contagem: "produto" (461 × 4) ou "subtarefa" (só os setores detalhados no cronograma)
-      contarPor: "produto",
       expandidos: new Set()
     };
 
@@ -1995,51 +1999,38 @@
       return `<div class="fin-head"><h2>Onde está parado</h2><span class="aside">${fmtInt(rows.length)} produtos previstos no período e ainda não aprovados · a 1ª subtarefa não concluída define</span></div>
         <div class="kpis kpis--parado">${cards}</div>`;
     }
-    /** Cartões e avanço no modo "Contar por: Subtarefa". */
-    function kpiStripSub(base) {
-      const prev = subLinhas(base).filter((s) => noPeriodo(s.fb));
-      const conc = prev.filter((s) => s.ok), pend = prev.filter((s) => !s.ok);
-      const venc = pend.filter((s) => s.fb < HOJE);
-      const atrSab = prev.filter(atrasoSabesp);
-      const def = (key, titulo, rows, regra) => { MODAIS[key] = { titulo, valor: fmtInt(rows.length), rows, esperado: rows.length, cols: COLS_SUB, csv: key, regra, fonte: `${FONTE_TELA()} · Subtarefas: regra 8.3 (PW para entrega/aprovação, Project para as demais)` }; };
-      def("sub:prev", "Subtarefas previstas", prev, `Subtarefas com Término da LB no período (${periodoTxt()}), só nos setores detalhados.`);
-      def("sub:conc", "Subtarefas concluídas", conc, "Concluída pela regra 8.3: última Aprovação SABESP = produto aprovado no PW; última entrega EFFICO = produto postado no PW; demais = 100% no Project.");
-      def("sub:pend", "Subtarefas pendentes", pend, "Previstas no período e não concluídas. Vencida = Término da LB antes de hoje.");
-      def("sub:atrsab", "Atraso Sabesp", atrSab, "Subtarefas de responsabilidade da SABESP concluídas depois da LB ou pendentes com LB vencida.");
-      return `<div class="kpis kpis--5">
-        ${kpiCard({ label: "Subtarefas previstas", value: fmtInt(prev.length), hint: periodoTxt(), icon: KPI_ICON.locais, cls: "kpi--locais", modal: "sub:prev", como: "Término da LB da subtarefa no período." })}
-        ${kpiCard({ label: "Concluídas", value: fmtInt(conc.length), hint: prev.length ? `${fmtPctBR(pct(conc.length, prev.length), 0)} das previstas` : "", icon: KPI_ICON.avanco, cls: "kpi--avanco", modal: "sub:conc", como: "Regra 8.3: PW para entrega e aprovação; Project para as demais." })}
-        ${kpiCard({ label: "Pendentes", value: fmtInt(pend.length), hint: `${fmtInt(venc.length)} vencidas · ${fmtInt(pend.length - venc.length)} a vencer`, icon: KPI_ICON.atraso, cls: venc.length ? "kpi--atraso" : "kpi--atraso-zero", modal: "sub:pend", como: "Previstas e não concluídas." })}
-        ${kpiCard({ label: "Atraso Sabesp", value: fmtInt(atrSab.length), hint: "subtarefas SABESP depois da LB", icon: KPI_ICON.prazo, cls: atrSab.length ? "kpi--reprog" : "kpi--atraso-zero", modal: "sub:atrsab", como: "Responsável SABESP, concluída depois da LB ou vencida." })}
-        ${kpiCard({ label: "% concluída", value: prev.length ? fmtPctBR(pct(conc.length, prev.length), 0) : "—", hint: `SABESP ${prev.filter((s) => s.resp === "SABESP").length} · EFFICO ${prev.filter((s) => s.resp === "EFFICO").length} previstas`, icon: KPI_ICON.avanco, cls: "kpi--prazo", modal: "sub:prev", como: "Concluídas ÷ previstas no período." })}
+    /** Subtarefas junto do produto, no "Avanço por produto": uma linha por subtarefa prevista no período, logo abaixo do produto. */
+    function linhaSub(key, titulo, rows, extra = "") {
+      const n = rows.length, c = rows.filter((s) => s.ok).length, v = rows.filter((s) => !s.ok && s.fb < HOJE).length;
+      MODAIS[key] = { titulo, valor: fmtInt(n), rows, esperado: n, cols: COLS_SUB, csv: key.replace(/[^a-z0-9]+/gi, "-"),
+        regra: `Subtarefas previstas no período (${periodoTxt()}): ${titulo}. Concluída pela regra 8.3: última Aprovação SABESP = produto aprovado no PW; última entrega EFFICO = produto postado no PW; demais = 100% no Project.`,
+        fonte: `${FONTE_TELA()} · Subtarefas: cronograma (Responsável e % Concluída) e PW` };
+      const w = (x) => (n ? (x / n) * 100 : 0);
+      // Uma linha só: nome · barra · concluídas de previstas · vencidas · %
+      return `<div class="subrow stage--click" role="button" tabindex="0" data-modal="${esc(key)}" title="${esc(titulo)}: previstas ${n} · concluídas ${c} · pendentes ${n - c}${v ? ` (${v} vencidas)` : ""}. Clique para ver a lista">
+        <span class="subrow__nome">↳ ${esc(titulo)}</span>
+        <div class="bar"><span class="done" style="width:${w(c)}%"></span><span class="late" style="width:${w(v)}%"></span><span class="plan" style="width:${w(n - c - v)}%"></span></div>
+        <span class="subrow__n"><span class="stage-done">${c} de ${n}</span>${v ? ` <span class="late-n">· ${v} venc.</span>` : ""}${extra}</span>
+        <span class="subrow__pct">${n ? fmtPctBR(pct(c, n), 0) : "—"}</span>
       </div>`;
     }
-    function avancoSubHtml(base) {
+    function subsDoProduto(e, base) {
+      const prev = subLinhas(base.filter((r) => r.e === e)).filter((s) => noPeriodo(s.fb));
+      // Na ordem do cronograma (posição da subtarefa dentro do produto)
+      const ordem = {};
+      prev.forEach((s) => { ordem[s.nome] = Math.min(ordem[s.nome] ?? 99, s.ord); });
+      return Object.keys(ordem).sort((a, b) => ordem[a] - ordem[b])
+        .map((nome) => linhaSub(`subn:${e}|${nome}`, nome, prev.filter((s) => s.nome === nome))).join("");
+    }
+    function subsPorResponsavel(base) {
       const prev = subLinhas(base).filter((s) => noPeriodo(s.fb));
-      const linha = (key, titulo, icone, rows) => {
-        const n = rows.length, c = rows.filter((s) => s.ok).length, v = rows.filter((s) => !s.ok && s.fb < HOJE).length;
-        MODAIS[key] = { titulo, valor: fmtInt(n), rows, esperado: n, cols: COLS_SUB, csv: key.replace(/[^a-z0-9]+/gi, "-"), regra: `Subtarefas previstas no período (${periodoTxt()}): ${titulo}.` };
-        const w = (x) => (n ? (x / n) * 100 : 0);
-        return `<div class="stage stage--click stage--sub" role="button" tabindex="0" data-modal="${esc(key)}">
-          <div class="stage-label"><span class="stage-icon">${icone}</span><div class="stage-text"><div class="stage-title">${esc(titulo)}</div>
-            <div class="stage-info"><span class="stage-done">Previstas ${n} · Concluídas ${c} · Pendentes ${n - c}</span>${v ? `<span class="badge badge-late badge-late--sm">${v} vencidas</span>` : ""}</div></div></div>
-          <div class="bar-wrap"><div class="bar bar--thick"><span class="done" style="width:${w(c)}%"></span><span class="late" style="width:${w(v)}%"></span><span class="plan" style="width:${w(n - c - v)}%"></span></div></div>
-          <div class="pct">${n ? fmtPctBR(pct(c, n), 0) : "—"}<div class="pct-prev">concluída</div></div>
-        </div>`;
-      };
-      const grupos = [];
-      etapasSelecionadas().forEach((e) => {
-        // Na ordem do cronograma (posição da subtarefa dentro do produto)
-        const ordem = {};
-        prev.filter((s) => s.e === e).forEach((s) => { ordem[s.nome] = Math.min(ordem[s.nome] ?? 99, s.ord); });
-        const nomes = Object.keys(ordem).sort((a, b) => ordem[a] - ordem[b]);
-        nomes.forEach((nome) => grupos.push(linha(`subn:${e}|${nome}`, `${ETAPA_NOME[e]} · ${nome}`, ETAPA_ICON[e], prev.filter((s) => s.e === e && s.nome === nome))));
-      });
-      const porResp = ["SABESP", "EFFICO"].map((rsp) => linha(`subr:${rsp}`, `Responsável ${rsp}`, ICON_BUILDING, prev.filter((s) => s.resp === rsp))).join("");
-      return `<div class="head"><div><h2>Avanço por subtarefa</h2><span class="aside">subtarefas previstas no período · ${periodoTxt()}</span></div></div>
-        <div class="bar-legend" aria-hidden="true"><span><i style="background:var(--c-done)"></i>Concluída</span><span><i style="background:var(--c-late)"></i>Pendente vencida</span><span><i style="background:var(--c-plan)"></i>Pendente a vencer</span></div>
-        ${grupos.join("") || `<div class="empty">Nenhuma subtarefa prevista neste recorte.</div>`}
-        <div class="sub-sep">Por responsável</div>${porResp}`;
+      if (!prev.length) return "";
+      return `<div class="sub-sep">Subtarefas por responsável</div>`
+        + ["SABESP", "EFFICO"].map((rsp) => {
+          const rows = prev.filter((s) => s.resp === rsp);
+          const atr = rows.filter(atrasoSabesp).length;
+          return linhaSub(`subr:${rsp}`, rsp, rows, atr ? ` <span class="late-n" title="subtarefas SABESP concluídas depois da LB ou vencidas">· ${atr} atraso Sabesp</span>` : "");
+        }).join("");
     }
 
     /* ---------- Modal: a fonte e as linhas que formam cada número ---------- */
@@ -2520,9 +2511,7 @@
       renderSidenav();
       Object.keys(MODAIS).forEach((k) => delete MODAIS[k]);
       // base: filtros de produto, local, responsável, FASE e busca (sem período e sem situação)
-      const porSub = state.contarPor === "subtarefa";
-      // Contar por subtarefa: só os setores detalhados no cronograma
-      const base = porSub ? filtrarExceto(null).filter((r) => r.subs && r.subs.length) : filtrarExceto(null);
+      const base = filtrarExceto(null);
       const nSetores = new Set(recs.filter(matchModulo).map((r) => r.sid)).size;
       const nDetalhados = new Set(recs.filter((r) => matchModulo(r) && r.subs && r.subs.length).map((r) => r.sid)).size;
       const etapasVisiveis = etapasSelecionadas();
@@ -2535,26 +2524,23 @@
       // Mantém a rolagem das listas ao redesenhar (ex.: abrir ▸ no meio da tabela)
       const rolagens = [...$("viewGerencial").querySelectorAll(".entregas-scroll, .queue, .gantt-scroll")].map((el) => el.scrollTop);
       $("viewGerencial").innerHTML = `
-        <div class="contar-por">
-          <span class="contar-por__lbl">Contar por</span>
-          <div class="chips" role="tablist"><button type="button" class="chip${porSub ? "" : " on"}" data-contar="produto">Produto</button><button type="button" class="chip${porSub ? " on" : ""}" data-contar="subtarefa">Subtarefa</button></div>
-          ${porSub ? `<span class="aviso-detalhe">Detalhamento disponível em ${nDetalhados} de ${nSetores} setores: a tela mostra só esses setores.</span>` : ""}
-        </div>
-        ${porSub ? kpiStripSub(base) : kpiStrip(base)}
+        ${kpiStrip(base)}
 
         <section class="block">${renderOndeParado(base)}</section>
 
         <section class="block cols cols--fila">
           <div class="panel" id="painelAvanco">
-            ${porSub ? avancoSubHtml(base) : `<div class="head"><div><h2>Avanço por produto</h2><span class="aside">previstos no período · ${periodoTxt()} · clique numa linha para ver os produtos</span></div></div>
+            <div class="head"><div><h2>Avanço por produto e subtarefa</h2><span class="aside">previstos no período · ${periodoTxt()} · clique numa linha para ver a lista</span></div></div>
             <div class="bar-legend" aria-hidden="true">
-              <span><i style="background:var(--c-done)"></i>Aprovado</span>
+              <span><i style="background:var(--c-done)"></i>Aprovado / concluída</span>
               <span><i style="background:var(--brand-teal);opacity:.55"></i>Em análise</span>
               <span><i style="background:var(--c-run)"></i>Em elaboração</span>
-              <span><i style="background:var(--c-late)"></i>Vazio vencido</span>
-              <span><i style="background:var(--c-plan)"></i>Vazio a vencer</span>
+              <span><i style="background:var(--c-late)"></i>Vazio / pendente vencido</span>
+              <span><i style="background:var(--c-plan)"></i>A vencer</span>
             </div>
-            ${etapasVisiveis.map((e) => stageRow(e, base)).join("")}`}
+            ${etapasVisiveis.map((e) => stageRow(e, base) + subsDoProduto(e, base)).join("")}
+            ${subsPorResponsavel(base)}
+            <p class="nota-detalhe">Subtarefas: detalhamento disponível em ${nDetalhados} de ${nSetores} setores do cronograma.</p>
           </div>
           <div class="panel panel--fila">${renderFilaPanel(base)}</div>
         </section>
@@ -2630,8 +2616,6 @@
         if (fila) { state.filaTab = fila.dataset.filaTab; return renderGerencial(); }
         const lm = t.closest("[data-locais-modo]");
         if (lm) { state.locaisModo = lm.dataset.locaisModo; return renderGerencial(); }
-        const cp = t.closest("[data-contar]");
-        if (cp) { state.contarPor = cp.dataset.contar; return renderGerencial(); }
         const ex = t.closest("[data-expand]");
         if (ex) {
           const k = ex.dataset.expand;
