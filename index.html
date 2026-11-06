@@ -2139,35 +2139,68 @@
     }
     document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && modalState.key) fecharModal(); });
 
-    /* ---------- Cartões ---------- */
+    /* ---------- Cartões: produto + subtarefas (cada linha do cronograma conta) ----------
+     * Previstos = produtos com Término da LB no período + subtarefas com Término da LB no período.
+     * Produto sem subtarefas conta só ele; produto detalhado conta ele e as subtarefas previstas no período.
+     * Aprovados/concluídos = produtos APROVADOS no PW + subtarefas concluídas (regra 8.3).
+     * Em análise = produtos PARA ANÁLISE no PW (subtarefa não tem esse estado).
+     * Vazios/pendentes = produtos sem arquivo no PW + subtarefas não concluídas. Vencido = LB antes de hoje. */
+    const linhaProduto = (r) => ({ ...r, tipo: "Produto" });
+    const ehSub = (x) => x.tipo === "Subtarefa";
+    const COLS_MISTO = [
+      { t: "Tipo", v: (x) => x.tipo },
+      { t: "Cod", v: (x) => x.cod }, { t: "Setor", v: (x) => x.loc }, { t: "Município", v: (x) => x.mun },
+      { t: "Produto", v: (x) => ETAPA_NOME[x.e], s: (x) => ETAPA_ORDEM.indexOf(x.e) },
+      { t: "Subtarefa", v: (x) => (ehSub(x) ? x.nome : "") },
+      { t: "Responsável", v: (x) => (ehSub(x) ? x.resp : ""), h: (x) => (ehSub(x) ? respBadge(x.resp) : "") },
+      { t: "Término LB", v: (x) => fmtDate(ehSub(x) ? x.fb : x.fp), s: (x) => (ehSub(x) ? x.fb : x.fp) || "" },
+      { t: "Situação", v: (x) => (ehSub(x) ? subSitTxt(x) : sitTxt(x)), h: (x) => (ehSub(x) ? subSitBadge(x) : sitBadge(x)) },
+      { t: "Postado / concluída em", v: (x) => { const d = ehSub(x) ? x.em : x.pwEnviadoEm; return d ? fmtDate(d) : ""; } },
+      { t: "Aprovado em", v: (x) => (!ehSub(x) && x.pwAprovadoEm ? fmtDate(x.pwAprovadoEm) : "") },
+      { t: "Fonte", v: (x) => (ehSub(x) ? x.fonte : "PW") },
+      { t: "Pasta do PW", v: (x) => (ehSub(x) ? x.prod.pastaPW : x.pastaPW) },
+      { t: "Arquivo considerado", v: (x) => (ehSub(x) ? "" : x.pwArquivo) },
+      { t: "Regra de casamento", v: (x) => { const r = ehSub(x) ? x.prod : x; return r.regraCasamento ? REGRA_CASAMENTO[r.regraCasamento] : "sem pasta no PW"; } }
+    ];
     function kpiStrip(base) {
       const i = indicadores(base);
-      const n = i.prev.length;
+      const sPrev = subLinhas(base).filter((s) => noPeriodo(s.fb)).map((s) => ({ ...s, tipo: "Subtarefa" }));
+      const sOk = sPrev.filter((s) => s.ok), sPend = sPrev.filter((s) => !s.ok);
+      const sVenc = sPend.filter((s) => s.fb < HOJE);
+      const P = (rows) => rows.map(linhaProduto);
+      const previstos = [...P(i.prev), ...sPrev];
+      const concluidos = [...P(i.aprov), ...sOk];
+      const pendentes = [...P(i.vazios), ...sPend];
+      const vencidos = i.venc.length + sVenc.length;
+      const postados = [...P(i.postados), ...sOk];
+      const n = previstos.length;
       const per = periodoTxt();
-      const ader = n ? fmtPctBR(pct(i.aprov.length, n), 0) : "—";
-      const postPct = n ? fmtPctBR(pct(i.postados.length, n), 0) : "—";
-      const def = (key, d) => { MODAIS[key] = { cols: COLS_PRODUTO, csv: key, ...d, esperado: d.rows.length }; };
-      def("previstos", { titulo: "Previstos", valor: fmtInt(n), rows: i.prev,
-        regra: `Previstos = produtos (setor × produto) com Término da Linha de Base no período (${per}).` });
-      def("aprovados", { titulo: "Aprovados", valor: fmtInt(i.aprov.length), rows: i.aprov,
-        regra: "Aprovados = produtos previstos no período com arquivo APROVADO no PW." });
-      def("analise", { titulo: "Em análise Sabesp", valor: fmtInt(i.ana.length), rows: i.ana,
-        regra: `Em análise = produtos previstos no período com arquivo PARA ANÁLISE no PW e nenhum APROVADO. Dias parados = dias úteis do 1º envio até hoje (${fmtDate(HOJE)}).` });
-      def("vazios", { titulo: "Vazios", valor: fmtInt(i.vazios.length), rows: i.vazios,
-        regra: `Vazios = produtos previstos no período sem nenhum arquivo SBSP no PW. Vencido = Término da LB antes de hoje (${fmtDate(HOJE)}).` });
-      def("postado", { titulo: "% postado e Aderência", valor: `${postPct} postado · ${ader} aderência`, rows: i.postados,
-        regra: "% postado = (aprovados + em análise) ÷ previstos no período. Aderência = aprovados ÷ previstos no período. A tabela lista os postados (aprovados + em análise)." });
+      const ader = n ? fmtPctBR(pct(concluidos.length, n), 0) : "—";
+      const postPct = n ? fmtPctBR(pct(postados.length, n), 0) : "—";
+      const quebra = (np, ns) => `${fmtInt(np)} produto${np === 1 ? "" : "s"} + ${fmtInt(ns)} subtarefa${ns === 1 ? "" : "s"}`;
+      const fonte = `${FONTE_TELA()} · Subtarefas: cronograma (Responsável, % Concluída) e PW (regra 8.3)`;
+      const def = (key, d) => { MODAIS[key] = { cols: COLS_MISTO, csv: key, fonte, ...d, esperado: d.rows.length }; };
+      def("previstos", { titulo: "Previstos", valor: `${fmtInt(n)} (${quebra(i.prev.length, sPrev.length)})`, rows: previstos,
+        regra: `Previstos = produtos com Término da Linha de Base no período (${per}) + subtarefas com Término da LB no período. Produto sem subtarefas conta só ele.` });
+      def("aprovados", { titulo: "Aprovados / concluídos", valor: `${fmtInt(concluidos.length)} (${quebra(i.aprov.length, sOk.length)})`, rows: concluidos,
+        regra: "Produtos previstos com arquivo APROVADO no PW + subtarefas previstas concluídas (última Aprovação SABESP e última entrega EFFICO pelo PW; demais pelo Project)." });
+      def("analise", { titulo: "Em análise Sabesp", valor: fmtInt(i.ana.length), rows: P(i.ana),
+        regra: `Produtos previstos com arquivo PARA ANÁLISE no PW e nenhum APROVADO. Dias parados = dias úteis do 1º envio até hoje (${fmtDate(HOJE)}).` });
+      def("vazios", { titulo: "Vazios / pendentes", valor: `${fmtInt(pendentes.length)} (${quebra(i.vazios.length, sPend.length)})`, rows: pendentes,
+        regra: `Produtos previstos sem arquivo no PW + subtarefas previstas não concluídas. Vencido = Término da LB antes de hoje (${fmtDate(HOJE)}).` });
+      def("postado", { titulo: "% postado e Aderência", valor: `${postPct} postado · ${ader} aderência`, rows: postados,
+        regra: "Aderência = aprovados/concluídos ÷ previstos. % postado = (produtos aprovados + em análise + subtarefas concluídas) ÷ previstos. A tabela lista os postados." });
       return `<div class="kpis kpis--5">
-        ${kpiCard({ label: "Previstos", value: fmtInt(n), hint: per, icon: KPI_ICON.locais, cls: "kpi--locais", modal: "previstos",
-          como: "Produtos com Término da Linha de Base no período (cronograma)." })}
-        ${kpiCard({ label: "Aprovados", value: fmtInt(i.aprov.length), hint: n ? `${fmtPctBR(pct(i.aprov.length, n), 0)} dos previstos` : "nenhum previsto no período", icon: KPI_ICON.avanco, cls: "kpi--avanco", modal: "aprovados",
-          como: "Previstos no período com arquivo APROVADO no PW." })}
+        ${kpiCard({ label: "Previstos", value: fmtInt(n), hint: `${per} · ${quebra(i.prev.length, sPrev.length)}`, icon: KPI_ICON.locais, cls: "kpi--locais", modal: "previstos",
+          como: "Produtos + subtarefas com Término da LB no período. Sem subtarefas, conta só o produto." })}
+        ${kpiCard({ label: "Aprovados / concluídos", value: fmtInt(concluidos.length), hint: `${n ? fmtPctBR(pct(concluidos.length, n), 0) : "—"} dos previstos · ${quebra(i.aprov.length, sOk.length)}`, icon: KPI_ICON.avanco, cls: "kpi--avanco", modal: "aprovados",
+          como: "Produtos APROVADOS no PW + subtarefas concluídas." })}
         ${kpiCard({ label: "Em análise Sabesp", value: fmtInt(i.ana.length), hint: i.ana.length ? `parados em média ${i.diasMed} d úteis` : "nenhum esperando a Sabesp", icon: KPI_ICON.prazo, cls: "kpi--prazo", modal: "analise",
-          como: "Previstos com arquivo PARA ANÁLISE no PW e nenhum APROVADO." })}
-        ${kpiCard({ label: "Vazios", value: fmtInt(i.vazios.length), hint: `${fmtInt(i.venc.length)} vencidos · ${fmtInt(i.aVencer.length)} a vencer${i.outros.length ? ` · +${i.outros.length} em elaboração/estado não informado` : ""}`, icon: KPI_ICON.atraso, cls: i.venc.length ? "kpi--atraso" : "kpi--atraso-zero", modal: "vazios",
-          como: "Previstos sem nenhum arquivo no PW. Vencido = LB antes de hoje." })}
-        ${kpiCard({ label: "Aderência · % postado", value: ader, hint: `postado: ${postPct} (${fmtInt(i.postados.length)} de ${fmtInt(n)})`, icon: KPI_ICON.avanco, cls: n && i.aprov.length >= n ? "kpi--avanco" : "kpi--reprog", modal: "postado",
-          como: "Aderência = aprovados ÷ previstos. % postado = (aprovados + em análise) ÷ previstos." })}
+          como: "Produtos com arquivo PARA ANÁLISE no PW e nenhum APROVADO." })}
+        ${kpiCard({ label: "Vazios / pendentes", value: fmtInt(pendentes.length), hint: `${fmtInt(vencidos)} vencidos · ${fmtInt(pendentes.length - vencidos)} a vencer${i.outros.length ? ` · +${i.outros.length} em elaboração/estado não informado` : ""}`, icon: KPI_ICON.atraso, cls: vencidos ? "kpi--atraso" : "kpi--atraso-zero", modal: "vazios",
+          como: "Produtos sem arquivo no PW + subtarefas não concluídas. Vencido = LB antes de hoje." })}
+        ${kpiCard({ label: "Aderência · % postado", value: ader, hint: `postado: ${postPct} (${fmtInt(postados.length)} de ${fmtInt(n)})`, icon: KPI_ICON.avanco, cls: n && concluidos.length >= n ? "kpi--avanco" : "kpi--reprog", modal: "postado",
+          como: "Aderência = concluídos ÷ previstos. % postado = (aprovados + em análise + subtarefas concluídas) ÷ previstos." })}
       </div>`;
     }
 
