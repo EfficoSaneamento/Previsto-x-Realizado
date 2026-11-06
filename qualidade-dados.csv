@@ -1,0 +1,72 @@
+﻿tipo;setor;municipio;cod;produto;detalhe
+Em análise no PW sem registro no Project;Lapa;São Paulo;100.005;Calibração;"enviado ao PW em 29/10/2026; Project 0% sem início real"
+Fora de sequência;Lapa;São Paulo;100.005;Calibração;Calibração no PW com Topologia sem arquivo no PW e 0% no Project (LB 30/04/2027)
+Código divergente;Mooca;São Paulo;100.082;Topologia;Cod 100.082 no cronograma × pasta 100.026 no PW (casado pela regra 1)
+Aprovação revertida;Carrao;São Paulo;100.031;Calibração;"estava APROVADO; sem arquivo aprovado desde a leitura de 06/11/2026"
+Aprovado no PW sem aprovação no Project;Sapopemba;São Paulo;100.101;Topologia;"aprovado no PW em 30/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Calibração;Término LB 07/01/2027 → Término atual 24/03/2027
+Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Concepção;Término LB 11/05/2027 → Término atual 26/07/2027
+Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Pacote Técnico;Término LB 25/05/2027 → Término atual 09/08/2027
+Código divergente;Vila Formosa;São Paulo;100.110;Topologia;Cod 100.110 no cronograma × pasta 100.109 no PW (casado pela regra 1)
+Aprovado no PW sem aprovação no Project;Vila Formosa;São Paulo;100.110;Calibração;"aprovado no PW em 04/11/2026; Project: ""Aprovação SABESP"" não concluída"
+Aprovado no PW sem aprovação no Project;Ferraz de Vasconcelos;Ferraz de Vasconcelos;305.001;Topologia;"aprovado no PW em 13/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Aprovado no PW sem aprovação no Project;Biritiba Mirim;Biritiba Mirim;215.001;Topologia;"aprovado no PW em 13/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Calibração;Término LB 18/11/2026 → Término atual 10/12/2026
+Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Concepção;Término LB 10/03/2027 → Término atual 02/04/2027
+Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Pacote Técnico;Término LB 24/03/2027 → Término atual 16/04/2027
+Aprovado no PW sem aprovação no Project;Carmo;São Paulo;100.002;Topologia;"aprovado no PW em 23/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Calibração;Término LB 11/11/2026 → Término atual 18/01/2027
+Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Concepção;Término LB 16/03/2027 → Término atual 19/05/2027
+Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Pacote Técnico;Término LB 01/04/2027 → Término atual 04/06/2027
+Código divergente;Perus;São Paulo;239.004;Topologia;Cod 239.004 no cronograma × pasta 100.004 no PW (casado pela regra 1)
+Reprogramada no Project (informativo);Vila Jaguara;São Paulo;100.007;Calibração;Término LB 08/10/2026 → Término atual 01/12/2026
+Reprogramada no Project (informativo);Vila Jaguara;São Paulo;100.007;Concepção;Término LB 13/11/2026 → Término atual 05/01/2027
+Reprogramada no Project (informativo);Vila Jaguara;São Paulo;100.007;Pacote Técnico;Término LB 30/11/2026 → Término atual 20/01/2027
+Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Topologia;Término LB 28/08/2026 → Término atual 22/10/2026
+Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Calibração;Término LB 06/10/2026 → Término atual 01/12/2026
+Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Concepção;Término LB 11/11/2026 → Término atual 06/01/2027
+Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Pacote Técnico;Término LB 26/11/2026 → Término atual 20/01/2027
+Em análise no PW sem registro no Project;Deriv Tremembe;São Paulo;100.056;Topologia;"enviado ao PW em 03/11/2026; Project 0% sem início real"
+Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Topologia;Término LB 28/08/2026 → Término atual 22/10/2026
+Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Calibração;Término LB 06/10/2026 → Término atual 01/12/2026
+Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Concepção;Término LB 05/11/2026 → Término atual 30/12/2026
+Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Pacote Técnico;Término LB 19/11/2026 → Término atual 14/01/2027
+Reprogramada no Project (informativo);Deriv Parque Cantareira;São Paulo;100.049;Topologia;Término LB 28/08/2026 → Término atual 09/11/2026
+Reprogramada no Project (informativo);Deriv Parque Cantareira;São Paulo;100.049;Calibração;Término LB 06/10/2026 → Término atual 16/12/2026
+Reprogramada no Project (informativo);Deriv Parque Cantareira;São Paulo;100.049;Concepção;Término LB 05/11/2026 → Término atual 15/01/2027
+Reprogramada no Project (informativo);Deriv Parque Cantareira;São Paulo;100.049;Pacote Técnico;Término LB 19/11/2026 → Término atual 01/02/2027
+Reprogramada no Project (informativo);Barueri;Barueri;206.001;Topologia;Término LB 28/08/2026 → Término atual 11/11/2026
+Reprogramada no Project (informativo);Barueri;Barueri;206.001;Calibração;Término LB 06/10/2026 → Término atual 18/12/2026
+Reprogramada no Project (informativo);Barueri;Barueri;206.001;Concepção;Término LB 11/11/2026 → Término atual 25/01/2027
+Reprogramada no Project (informativo);Barueri;Barueri;206.001;Pacote Técnico;Término LB 26/11/2026 → Término atual 09/02/2027
+Reprogramada no Project (informativo);Taboão da Serra;Taboão da Serra;675.001;Topologia;Término LB 28/08/2026 → Término atual 11/11/2026
+Reprogramada no Project (informativo);Taboão da Serra;Taboão da Serra;675.001;Calibração;Término LB 06/10/2026 → Término atual 18/12/2026
+Reprogramada no Project (informativo);Taboão da Serra;Taboão da Serra;675.001;Concepção;Término LB 11/11/2026 → Término atual 25/01/2027
+Reprogramada no Project (informativo);Taboão da Serra;Taboão da Serra;675.001;Pacote Técnico;Término LB 26/11/2026 → Término atual 09/02/2027
+Reprogramada no Project (informativo);Deriv Butanta Usp;São Paulo;100.041;Calibração;Término LB 28/12/2026 → Término atual 29/01/2027
+Reprogramada no Project (informativo);Deriv Butanta Usp;São Paulo;100.041;Concepção;Término LB 16/04/2027 → Término atual 20/05/2027
+Reprogramada no Project (informativo);Deriv Butanta Usp;São Paulo;100.041;Pacote Técnico;Término LB 26/04/2027 → Término atual 31/05/2027
+Código divergente;Jaguare;São Paulo;492.005;Topologia;Cod 492.005 no cronograma × pasta 100.068 no PW (casado pela regra 1)
+Reprogramada no Project (informativo);Jaguare;São Paulo;492.005;Calibração;Término LB 28/12/2026 → Término atual 29/01/2027
+Reprogramada no Project (informativo);Jaguare;São Paulo;492.005;Concepção;Término LB 16/04/2027 → Término atual 20/05/2027
+Reprogramada no Project (informativo);Jaguare;São Paulo;492.005;Pacote Técnico;Término LB 03/05/2027 → Término atual 04/06/2027
+Reprogramada no Project (informativo);Raposo Tavares - São Paulo;São Paulo;100.095;Calibração;Término LB 04/01/2027 → Término atual 04/02/2027
+Reprogramada no Project (informativo);Raposo Tavares - São Paulo;São Paulo;100.095;Concepção;Término LB 26/04/2027 → Término atual 28/05/2027
+Reprogramada no Project (informativo);Raposo Tavares - São Paulo;São Paulo;100.095;Pacote Técnico;Término LB 10/05/2027 → Término atual 11/06/2027
+Reprogramada no Project (informativo);Capão Redondo;São Paulo;100.030;Topologia;Término LB 01/10/2026 → Término atual 15/12/2026
+Reprogramada no Project (informativo);Capão Redondo;São Paulo;100.030;Calibração;Término LB 11/11/2026 → Término atual 25/01/2027
+Reprogramada no Project (informativo);Capão Redondo;São Paulo;100.030;Concepção;Término LB 15/12/2026 → Término atual 26/02/2027
+Reprogramada no Project (informativo);Capão Redondo;São Paulo;100.030;Pacote Técnico;Término LB 30/12/2026 → Término atual 15/03/2027
+Código divergente;Rio Grande da Serra;Rio Grande da Serra;581.007;Topologia;Cod 581.007 no cronograma × pasta 589.001 no PW (casado pela regra 1)
+Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;581.007;Calibração;Término LB 17/11/2026 → Término atual 17/12/2026
+Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;581.007;Concepção;Término LB 09/03/2027 → Término atual 08/04/2027
+Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;581.007;Pacote Técnico;Término LB 23/03/2027 → Término atual 26/04/2027
+Aprovado no PW sem aprovação no Project;PARELHEIROS;São Paulo;100.085;Topologia;"aprovado no PW em 15/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Casamento a validar;Espírito Santo do Pinhal;Espírito Santo do Pinhal;530.001;Topologia;ligado à pasta 530.001 pela regra 2 (só o nome do setor)
+Código divergente;Fernandópolis;Fernandópolis;304.001;Topologia;Cod 304.001 no cronograma × pasta 304.002 no PW (casado pela regra 1)
+Em análise no PW sem registro no Project;Itanhaém;Itanhaém;120.001;Topologia;"enviado ao PW em 14/10/2026; Project 0% sem início real"
+Em análise no PW sem registro no Project;Peruíbe;Peruíbe;130.001;Calibração;"enviado ao PW em 15/10/2026; Project 0% sem início real"
+Fora de sequência;Peruíbe;Peruíbe;130.001;Calibração;Calibração no PW com Topologia sem arquivo no PW e 0% no Project (LB 23/08/2028)
+Arquivo fora do padrão de nome (a validar);Parelheiros;São Paulo;100.085;Topologia;2.Topologia / 1.Arquivo WaterGEMS · não conta como produto
+Arquivo fora do padrão de nome (a validar);Perus;São Paulo;100.004;Calibração;4.Modelo Calibrado / 1.Arquivo WaterGEMS · não conta como produto
+Fonte pendente;—;;;;medições: falta preencher entradas/medicoes.xlsx (lido: controle-medicoes.xlsx)
