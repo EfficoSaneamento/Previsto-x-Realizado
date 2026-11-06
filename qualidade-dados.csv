@@ -4,17 +4,22 @@ Fora de sequência;Lapa;São Paulo;100.005;Calibração;Calibração no PW com T
 Código divergente;Mooca;São Paulo;100.082;Topologia;Cod 100.082 no cronograma × pasta 100.026 no PW (casado pela regra 1)
 Aprovação revertida;Carrao;São Paulo;100.031;Calibração;"estava APROVADO; sem arquivo aprovado desde a leitura de 06/11/2026"
 Aprovado no PW sem aprovação no Project;Sapopemba;São Paulo;100.101;Topologia;"aprovado no PW em 30/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);Sapopemba;São Paulo;100.101;Topologia;"Aprovação SABESP (ID 242): concluída pelo PW (produto aprovado); Project 0%"
 Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Calibração;Término LB 07/01/2027 → Término atual 24/03/2027
 Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Concepção;Término LB 11/05/2027 → Término atual 26/07/2027
 Reprogramada no Project (informativo);Sapopemba;São Paulo;100.101;Pacote Técnico;Término LB 25/05/2027 → Término atual 09/08/2027
 Código divergente;Vila Formosa;São Paulo;100.110;Topologia;Cod 100.110 no cronograma × pasta 100.109 no PW (casado pela regra 1)
 Aprovado no PW sem aprovação no Project;Vila Formosa;São Paulo;100.110;Calibração;"aprovado no PW em 04/11/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);Vila Formosa;São Paulo;100.110;Calibração;"Aprovação SABESP (ID 287): concluída pelo PW (produto aprovado); Project 0%"
 Aprovado no PW sem aprovação no Project;Ferraz de Vasconcelos;Ferraz de Vasconcelos;305.001;Topologia;"aprovado no PW em 13/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);Ferraz de Vasconcelos;Ferraz de Vasconcelos;305.001;Topologia;"Aprovação SABESP (ID 342): concluída pelo PW (produto aprovado); Project 0%"
 Aprovado no PW sem aprovação no Project;Biritiba Mirim;Biritiba Mirim;215.001;Topologia;"aprovado no PW em 13/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);Biritiba Mirim;Biritiba Mirim;215.001;Topologia;"Aprovação SABESP (ID 371): concluída pelo PW (produto aprovado); Project 0%"
 Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Calibração;Término LB 18/11/2026 → Término atual 10/12/2026
 Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Concepção;Término LB 10/03/2027 → Término atual 02/04/2027
 Reprogramada no Project (informativo);Cangaiba;São Paulo;100.029;Pacote Técnico;Término LB 24/03/2027 → Término atual 16/04/2027
 Aprovado no PW sem aprovação no Project;Carmo;São Paulo;100.002;Topologia;"aprovado no PW em 23/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);Carmo;São Paulo;100.002;Topologia;"Aprovação SABESP (ID 415): concluída pelo PW (produto aprovado); Project 0%"
 Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Calibração;Término LB 11/11/2026 → Término atual 18/01/2027
 Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Concepção;Término LB 16/03/2027 → Término atual 19/05/2027
 Reprogramada no Project (informativo);Deriv Freguesia Do O;São Paulo;100.044;Pacote Técnico;Término LB 01/04/2027 → Término atual 04/06/2027
@@ -27,6 +32,7 @@ Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Calibraçã
 Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Concepção;Término LB 11/11/2026 → Término atual 06/01/2027
 Reprogramada no Project (informativo);Deriv Horto;São Paulo;100.045;Pacote Técnico;Término LB 26/11/2026 → Término atual 20/01/2027
 Em análise no PW sem registro no Project;Deriv Tremembe;São Paulo;100.056;Topologia;"enviado ao PW em 03/11/2026; Project 0% sem início real"
+Subtarefa: PW × Project divergem (vale o PW);Deriv Tremembe;São Paulo;100.056;Topologia;"Modelo construído em WaterGems (ID 631): concluída pelo PW (produto analise); Project 0%"
 Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Topologia;Término LB 28/08/2026 → Término atual 22/10/2026
 Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Calibração;Término LB 06/10/2026 → Término atual 01/12/2026
 Reprogramada no Project (informativo);Deriv Tremembe;São Paulo;100.056;Concepção;Término LB 05/11/2026 → Término atual 30/12/2026
@@ -62,6 +68,7 @@ Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;58
 Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;581.007;Concepção;Término LB 09/03/2027 → Término atual 08/04/2027
 Reprogramada no Project (informativo);Rio Grande da Serra;Rio Grande da Serra;581.007;Pacote Técnico;Término LB 23/03/2027 → Término atual 26/04/2027
 Aprovado no PW sem aprovação no Project;PARELHEIROS;São Paulo;100.085;Topologia;"aprovado no PW em 15/10/2026; Project: ""Aprovação SABESP"" não concluída"
+Subtarefa: PW × Project divergem (vale o PW);PARELHEIROS;São Paulo;100.085;Topologia;"Aprovação SABESP (ID 1189): concluída pelo PW (produto aprovado); Project 0%"
 Casamento a validar;Espírito Santo do Pinhal;Espírito Santo do Pinhal;530.001;Topologia;ligado à pasta 530.001 pela regra 2 (só o nome do setor)
 Código divergente;Fernandópolis;Fernandópolis;304.001;Topologia;Cod 304.001 no cronograma × pasta 304.002 no PW (casado pela regra 1)
 Em análise no PW sem registro no Project;Itanhaém;Itanhaém;120.001;Topologia;"enviado ao PW em 14/10/2026; Project 0% sem início real"
