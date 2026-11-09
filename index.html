@@ -2543,17 +2543,16 @@
 
         <section class="block cols cols--fila">
           <div class="panel" id="painelAvanco">
-            <div class="head"><div><h2>Avanço por produto e subtarefa</h2><span class="aside">previstos no período · ${periodoTxt()} · clique numa linha para ver a lista</span></div></div>
+            <div class="head"><div><h2>Avanço por produto</h2><span class="aside">previstos no período · ${periodoTxt()} · clique numa linha para ver os produtos</span></div></div>
             <div class="bar-legend" aria-hidden="true">
-              <span><i style="background:var(--c-done)"></i>Aprovado / concluída</span>
+              <span><i style="background:var(--c-done)"></i>Aprovado</span>
               <span><i style="background:var(--brand-teal);opacity:.55"></i>Em análise</span>
               <span><i style="background:var(--c-run)"></i>Em elaboração</span>
-              <span><i style="background:var(--c-late)"></i>Vazio / pendente vencido</span>
-              <span><i style="background:var(--c-plan)"></i>A vencer</span>
+              <span><i style="background:var(--c-late)"></i>Vazio vencido</span>
+              <span><i style="background:var(--c-plan)"></i>Vazio a vencer</span>
             </div>
-            ${etapasVisiveis.map((e) => stageRow(e, base) + subsDoProduto(e, base)).join("")}
-            ${subsPorResponsavel(base)}
-            <p class="nota-detalhe">Subtarefas: detalhamento disponível em ${nDetalhados} de ${nSetores} setores do cronograma.</p>
+            ${/* Subtarefas no avanço desligadas por enquanto (pedido de 09/11/2026); para religar: stageRow(e, base) + subsDoProduto(e, base) e subsPorResponsavel(base) */ ""}
+            ${etapasVisiveis.map((e) => stageRow(e, base)).join("")}
           </div>
           <div class="panel panel--fila">${renderFilaPanel(base)}</div>
         </section>
